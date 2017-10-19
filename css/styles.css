@@ -54,3 +54,12 @@ body {
 .results strong {
   color: #ffe918;
 }
+
+.multiline {
+  margin-left: 1em;
+  display: block;
+}
+
+.films .multiline {
+  font-style: italic;
+}

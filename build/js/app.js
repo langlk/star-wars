@@ -46,38 +46,39 @@ var titleCase = function titleCase(string) {
   return stringArray.join(" ");
 };
 
-var displayProperty = function displayProperty(key, value) {
+var displayURL = function displayURL(key, url, style) {
+  var infoPromise = starWars.find(url);
+  infoPromise.then(function (response) {
+    var displayVal = "";
+    if (response.hasOwnProperty("name")) {
+      displayVal = response.name;
+    } else {
+      displayVal = response.title;
+    }
+    $("." + key).append("<span class=\"" + style + "\">" + displayVal + "</span>");
+  }).fail(function (error) {
+    console.log(error);
+  });
+};
 
+var displayProperty = function displayProperty(key, value) {
   if (key === "name" || key === "title") {
     $(".results").prepend("<h2>" + value + "</h2>");
   } else {
     $('.results').append("<div class=" + key + "><strong>" + titleCase(key) + ":</strong> </div>");
     if ((typeof value === "undefined" ? "undefined" : _typeof(value)) === 'object') {
-      value.forEach(function (url) {
-        var infoPromise = starWars.find(url);
-        infoPromise.then(function (response) {
-          var displayVal = "";
-          if (response.hasOwnProperty("name")) {
-            displayVal = response.name;
-          } else {
-            displayVal = response.title;
-          }
-          $("." + key).append("<div>" + displayVal + "<div>");
-        }).fail(function (error) {
-          console.log(error);
+      if (value.length === 1) {
+        displayURL(key, value, "oneline");
+      } else {
+        value.forEach(function (url) {
+          displayURL(key, url, "multiline");
         });
-      });
+      }
     } else {
       if (typeof value === "string" && value.startsWith('https')) {
-        // api call madness!
-        var infoPromise = starWars.find(value);
-        infoPromise.then(function (response) {
-          $("." + key).append("<span>" + response.name + "</span>");
-        }).fail(function (error) {
-          console.log(error);
-        });
+        displayURL(key, value, "oneline");
       } else {
-        $("." + key).append("<span>" + value + "</span>");
+        $("." + key).append("<span class=\"oneline\">" + value + "</span>");
       }
     }
   }

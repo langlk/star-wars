@@ -9,42 +9,40 @@ let titleCase = function(string){
   return stringArray.join(" ");
 }
 
-
+let displayURL = function(key, url, style) {
+  let infoPromise = starWars.find(url);
+  infoPromise.then(function(response) {
+    let displayVal = ""
+    if (response.hasOwnProperty("name")) {
+      displayVal = response.name;
+    } else {
+      displayVal = response.title;
+    }
+    $(`.${key}`).append(`<span class="${style}">${displayVal}</span>`);
+  })
+  .fail(function(error) {
+    console.log(error);
+  });
+}
 
 let displayProperty = function(key, value) {
-
   if (key === "name" || key === "title") {
     $(".results").prepend(`<h2>${value}</h2>`);
   } else  {
     $('.results').append(`<div class=${key}><strong>${titleCase(key)}:</strong> </div>`);
     if (typeof(value) === 'object') {
-      value.forEach(function(url) {
-        let infoPromise = starWars.find(url);
-        infoPromise.then(function(response) {
-          let displayVal = ""
-          if (response.hasOwnProperty("name")) {
-            displayVal = response.name;
-          } else {
-            displayVal = response.title;
-          }
-          $(`.${key}`).append(`<div>${displayVal}<div>`);
-        })
-        .fail(function(error) {
-          console.log(error);
-        });
-      });
-    } else {
-      if (typeof(value) ==="string" && value.startsWith('https')) {
-        // api call madness!
-        let infoPromise = starWars.find(value);
-        infoPromise.then(function(response) {
-          $(`.${key}`).append(`<span>${response.name}</span>`);
-        })
-        .fail(function(error) {
-          console.log(error);
-        });
+      if (value.length === 1) {
+        displayURL(key, value, "oneline");
       } else {
-        $(`.${key}`).append(`<span>${value}</span>`);
+        value.forEach(function(url) {
+          displayURL(key, url, "multiline");
+        });
+      }
+    } else {
+      if (typeof(value) === "string" && value.startsWith('https')) {
+        displayURL(key, value, "oneline");
+      } else {
+        $(`.${key}`).append(`<span class="oneline">${value}</span>`);
       }
     }
   }
