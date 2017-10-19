@@ -38,7 +38,6 @@ let displayProperty = function(key, value) {
   } else {
     $('.results').append(`<div class=${key}><strong>${titleCase(key)}:</strong> </div>`);
     if (key === 'opening_crawl') {
-      debugger;
       displayCrawl(value);
     } else if (typeof(value) === 'object') {
       if (value.length === 1) {
