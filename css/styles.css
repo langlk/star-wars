@@ -3,6 +3,7 @@ body {
   font-size: 18px;
   background-color: black;
   color: white;
+  padding-bottom: 4em;
 }
 
 .intro {
@@ -49,6 +50,10 @@ body {
   margin-top: 2em;
   margin-left: auto;
   margin-right: auto;
+}
+
+.results div {
+  margin-top: .3em;
 }
 
 .results strong {

@@ -74,7 +74,6 @@ var displayProperty = function displayProperty(key, value) {
   } else {
     $('.results').append("<div class=" + key + "><strong>" + titleCase(key) + ":</strong> </div>");
     if (key === 'opening_crawl') {
-      debugger;
       displayCrawl(value);
     } else if ((typeof value === "undefined" ? "undefined" : _typeof(value)) === 'object') {
       if (value.length === 1) {
