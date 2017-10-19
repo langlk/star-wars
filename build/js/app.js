@@ -46,6 +46,13 @@ var titleCase = function titleCase(string) {
   return stringArray.join(" ");
 };
 
+var displayCrawl = function displayCrawl(crawl) {
+  var crawlLines = crawl.split('\r\n');
+  crawlLines.forEach(function (line) {
+    $(".opening_crawl").append("<span class=\"crawl\">" + line + "</span>");
+  });
+};
+
 var displayURL = function displayURL(key, url, style) {
   var infoPromise = starWars.find(url);
   infoPromise.then(function (response) {
@@ -66,7 +73,10 @@ var displayProperty = function displayProperty(key, value) {
     $(".results").prepend("<h2>" + value + "</h2>");
   } else {
     $('.results').append("<div class=" + key + "><strong>" + titleCase(key) + ":</strong> </div>");
-    if ((typeof value === "undefined" ? "undefined" : _typeof(value)) === 'object') {
+    if (key === 'opening_crawl') {
+      debugger;
+      displayCrawl(value);
+    } else if ((typeof value === "undefined" ? "undefined" : _typeof(value)) === 'object') {
       if (value.length === 1) {
         displayURL(key, value, "oneline");
       } else {

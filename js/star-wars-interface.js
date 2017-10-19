@@ -9,6 +9,13 @@ let titleCase = function(string){
   return stringArray.join(" ");
 }
 
+let displayCrawl = function(crawl) {
+  let crawlLines = crawl.split('\r\n');
+  crawlLines.forEach(function(line) {
+    $(`.opening_crawl`).append(`<span class="crawl">${line}</span>`);
+  })
+}
+
 let displayURL = function(key, url, style) {
   let infoPromise = starWars.find(url);
   infoPromise.then(function(response) {
@@ -28,9 +35,12 @@ let displayURL = function(key, url, style) {
 let displayProperty = function(key, value) {
   if (key === "name" || key === "title") {
     $(".results").prepend(`<h2>${value}</h2>`);
-  } else  {
+  } else {
     $('.results').append(`<div class=${key}><strong>${titleCase(key)}:</strong> </div>`);
-    if (typeof(value) === 'object') {
+    if (key === 'opening_crawl') {
+      debugger;
+      displayCrawl(value);
+    } else if (typeof(value) === 'object') {
       if (value.length === 1) {
         displayURL(key, value, "oneline");
       } else {
